@@ -1,9 +1,55 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI()
+from routers import search, store, report
+
+
+app = FastAPI(
+    title="Bandofind API",
+    description="Anime merchandise finder API",
+    version="1.0.0"
+)
+
+
+
+app.add_middleware(
+
+    CORSMiddleware,
+
+    allow_origins=[
+        "http://localhost:3000"
+    ],
+
+    allow_credentials=True,
+
+    allow_methods=[
+        "*"
+    ],
+
+    allow_headers=[
+        "*"
+    ],
+
+)
+
+
+
+app.include_router(
+    search.router
+)
+
+app.include_router(
+    store.router
+)
+app.include_router(
+    report.router
+)
+
+
 
 @app.get("/")
 def root():
+
     return {
-        "message": "Bandofind API is running!"
+        "message": "Bandofind API running"
     }
